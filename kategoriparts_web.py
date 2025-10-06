@@ -1,9 +1,10 @@
-# Program Kategorisasi Part Number berdasarkan Demand Pattern - VERSI FINAL
+# Program Kategorisasi Part Number berdasarkan Demand Pattern - VERSI STREAMLIT
 # Kriteria di kategoriparts.py mengikuti standar akademik yang umum dipakai 
 # untuk demand intermittent: klasifikasi Syntetos–Boylan (SB)
 import pandas as pd
 import numpy as np
 import warnings
+import streamlit as st
 warnings.filterwarnings('ignore')
 
 def _find_col(df, candidates):
