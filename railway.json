@@ -1,0 +1,64 @@
+{
+  "$schema": "https://railway.app/railway.schema.json",
+  "build": {
+    "builder": "NIXPACKS",
+    "buildCommand": "pip install --upgrade pip && pip install -r requirements.txt"
+  },
+  "deploy": {
+    "numReplicas": 1,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 10,
+    "healthcheckPath": "/health",
+    "healthcheckTimeout": 600,
+    "startPeriod": 180,
+    "startCommand": "uvicorn main:app --host 0.0.0.0 --port 8080 --workers 1 --timeout-keep-alive 300"
+  },
+  "environments": {
+    "production": {
+      "variables": {
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONDONTWRITEBYTECODE": "1", 
+        "MEMORY_LIMIT": "8G",
+        "OMP_NUM_THREADS": "3",
+        "OPENBLAS_NUM_THREADS": "3",
+        "MKL_NUM_THREADS": "3",
+        "RAILWAY_ENVIRONMENT": "production",
+        "ENABLE_MONITORING": "true",
+        "LOG_LEVEL": "INFO",
+        "MAX_WORKERS": "1",
+        "BATCH_SIZE": "15",
+        "TIMEOUT_SECONDS": "1800",
+        "ADAPTIVE_BATCH": "true",
+        "MAX_MEMORY_THRESHOLD": "70",
+        "MAX_DATA_MONTHS": "48",
+        "PORT": "8080",
+        "TF_CPP_MIN_LOG_LEVEL": "2",
+        "TF_ENABLE_ONEDNN_OPTS": "0",
+        "TF_FORCE_GPU_ALLOW_GROWTH": "false",
+        "TF_GPU_ALLOCATOR": "cuda_malloc_async"
+      }
+    },
+    "development": {
+      "variables": {
+        "PYTHONUNBUFFERED": "1",
+        "PYTHONDONTWRITEBYTECODE": "1",
+        "MEMORY_LIMIT": "2G",
+        "OMP_NUM_THREADS": "2",
+        "OPENBLAS_NUM_THREADS": "2",
+        "MKL_NUM_THREADS": "2",
+        "RAILWAY_ENVIRONMENT": "development",
+        "ENABLE_MONITORING": "true",
+        "LOG_LEVEL": "DEBUG",
+        "MAX_WORKERS": "2",
+        "BATCH_SIZE": "10",
+        "TIMEOUT_SECONDS": "3600",
+        "MAX_DATA_MONTHS": "48",
+        "PORT": "8080",
+        "TF_CPP_MIN_LOG_LEVEL": "2",
+        "TF_ENABLE_ONEDNN_OPTS": "0",
+        "TF_FORCE_GPU_ALLOW_GROWTH": "false",
+        "TF_GPU_ALLOCATOR": "cuda_malloc_async"
+      }
+    }
+  }
+} 
