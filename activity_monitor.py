@@ -178,6 +178,31 @@ class ActivityMonitor:
         if file_size:
             monitor_logger.info(f"   File Size: {file_size} bytes")
     
+    def log_streamlit_activity(self, session_id: str, activity_type: str, 
+                              file_uploaded: bool = False, file_size: Optional[int] = None,
+                              processing_time: float = 0.0, status: str = "success"):
+        """Log aktivitas Streamlit khusus"""
+        activity = WebActivity(
+            timestamp=datetime.now().isoformat(),
+            client_ip="streamlit_local",
+            endpoint=f"/streamlit/{activity_type}",
+            method="POST",
+            response_time=processing_time,
+            status_code=200 if status == "success" else 500,
+            user_agent="streamlit_app",
+            file_uploaded=file_uploaded,
+            file_size=file_size,
+            session_id=session_id
+        )
+        
+        self.web_activities.append(activity)
+        
+        # Log detail ke file
+        monitor_logger.info(f"📱 STREAMLIT ACTIVITY: {activity_type} | Session: {session_id}")
+        monitor_logger.info(f"   Processing Time: {processing_time:.3f}s | Status: {status}")
+        if file_size:
+            monitor_logger.info(f"   File Size: {file_size} bytes")
+    
     def log_model_selection_detail(self, part_number: str, models_tested: List[str],
                                  error_results: Dict[str, float], selected_model: str,
                                  selection_reason: str):
