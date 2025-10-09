@@ -52,39 +52,194 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS untuk UI seperti gambar
 st.markdown("""
 <style>
-    .main-header {
-        font-size: 2.5rem;
-        font-weight: bold;
-        color: #1f77b4;
+    /* Import font dari Google Fonts */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    
+    /* Global styles */
+    .stApp {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        font-family: 'Inter', sans-serif;
+    }
+    
+    /* Hide default Streamlit elements */
+    .stApp > header {
+        display: none;
+    }
+    
+    .stApp > div[data-testid="stToolbar"] {
+        display: none;
+    }
+    
+    /* Main container */
+    .main-container {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        padding: 2rem;
+    }
+    
+    /* Welcome section */
+    .welcome-section {
         text-align: center;
+        margin-bottom: 3rem;
+        color: white;
+    }
+    
+    .welcome-title {
+        font-size: 3rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    .welcome-subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
         margin-bottom: 2rem;
     }
-    .success-message {
-        background-color: #d4edda;
-        border: 1px solid #c3e6cb;
-        color: #155724;
-        padding: 1rem;
-        border-radius: 0.375rem;
-        margin: 1rem 0;
+    
+    /* Upload section */
+    .upload-section {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 20px;
+        padding: 2rem;
+        margin: 2rem auto;
+        max-width: 600px;
+        box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
     }
-    .error-message {
-        background-color: #f8d7da;
-        border: 1px solid #f5c6cb;
-        color: #721c24;
-        padding: 1rem;
-        border-radius: 0.375rem;
-        margin: 1rem 0;
+    
+    .upload-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1rem;
     }
-    .info-message {
-        background-color: #d1ecf1;
-        border: 1px solid #bee5eb;
-        color: #0c5460;
+    
+    .upload-instructions {
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.6;
+    }
+    
+    .upload-instructions strong {
+        color: #333;
+    }
+    
+    /* Dashboard containers */
+    .dashboard-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        margin-top: 3rem;
+    }
+    
+    .dashboard-card {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 15px;
+        padding: 1.5rem;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        backdrop-filter: blur(10px);
+    }
+    
+    .dashboard-title {
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 1.5rem;
+        text-align: center;
+    }
+    
+    /* Metrics cards */
+    .metrics-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 1rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .metric-card {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
         padding: 1rem;
-        border-radius: 0.375rem;
-        margin: 1rem 0;
+        border-radius: 10px;
+        text-align: center;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .metric-label {
+        font-size: 0.9rem;
+        opacity: 0.9;
+        margin-bottom: 0.5rem;
+    }
+    
+    .metric-value {
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+    
+    /* Chart containers */
+    .chart-container {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 1rem;
+        margin-bottom: 1rem;
+        min-height: 200px;
+    }
+    
+    /* Custom file uploader */
+    .stFileUploader > div {
+        background: #f8f9fa;
+        border: 2px dashed #dee2e6;
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+    
+    .stFileUploader > div:hover {
+        border-color: #667eea;
+        background: #f0f2ff;
+    }
+    
+    /* Custom buttons */
+    .stButton > button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        border-radius: 10px;
+        padding: 0.75rem 2rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+    }
+    
+    .stButton > button:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+    }
+    
+    /* Hide sidebar */
+    .stSidebar {
+        display: none;
+    }
+    
+    /* Responsive design */
+    @media (max-width: 768px) {
+        .dashboard-container {
+            grid-template-columns: 1fr;
+        }
+        
+        .welcome-title {
+            font-size: 2rem;
+        }
+        
+        .upload-section {
+            margin: 1rem;
+            padding: 1.5rem;
+        }
     }
 </style>
 """, unsafe_allow_html=True)
@@ -195,42 +350,27 @@ def display_categorization_results(categorization_data: Dict[str, Any]):
         categorized_df = pd.DataFrame(data['categorized_data'])
         st.dataframe(categorized_df, use_container_width=True)
 
-def main():
-    """Main Streamlit application"""
-    
-    # Header
-    st.markdown('<h1 class="main-header">📊 Forecast Web Application</h1>', unsafe_allow_html=True)
-    
-    # Sidebar
-    with st.sidebar:
-        st.header("⚙️ Settings")
-        
-        # Processing options
-        st.subheader("Processing Options")
-        max_data_months = st.slider("Max Data Months", 12, 48, 24, help="Maximum months of historical data to use")
-        batch_size = st.slider("Batch Size", 5, 20, 10, help="Number of parts to process in each batch")
-        
-        # Model options
-        st.subheader("Model Options")
-        enable_lstm = st.checkbox("Enable LSTM", value=True, help="Enable LSTM neural network model")
-        enable_ensemble = st.checkbox("Enable Ensemble", value=True, help="Enable ensemble model selection")
-        
-        # Security options
-        st.subheader("Security Options")
-        auto_cleanup = st.checkbox("Auto Cleanup", value=True, help="Automatically clean up temporary files")
-        memory_limit = st.slider("Memory Limit (%)", 50, 90, 75, help="Memory usage limit before cleanup")
-    
-    # Main content
-    tab1, tab2, tab3, tab4 = st.tabs(["📁 Upload & Process", "📊 Forecast Results", "📋 Categorization Results", "📈 Monitoring"])
-    
-    with tab1:
-        st.header("📁 Upload & Process Data")
+def create_upload_section():
+    """Create upload section like in the image"""
+    st.markdown("""
+    <div class="upload-section">
+        <div class="upload-title">Halo!</div>
+        <div class="upload-instructions">
+            Upload dataset (.xlsx) Anda di sini! (Max. 40 Part Number)<br><br>
+            <strong>Dataset history harus dari satu depo saja dan memiliki kolom berikut:</strong><br>
+            PART_NO, MONTH, ORIGINAL_SHIPPING_QTY atau ORDER_QTY<br><br>
+            <strong>Kolom opsional:</strong><br>
+            WORKING_DAYS, INVENTORY_CONTROL_CLASS
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
         
         # File upload
         uploaded_file = st.file_uploader(
             "Choose an Excel file",
             type=['xlsx', 'xls'],
-            help="Upload your dataset in Excel format"
+        help="Upload your dataset in Excel format",
+        label_visibility="collapsed"
         )
         
         if uploaded_file is not None:
@@ -245,10 +385,6 @@ def main():
                     if df is not None:
                         st.success(f"✅ File processed successfully. Shape: {df.shape}")
                         
-                        # Display data preview
-                        st.subheader("📋 Data Preview")
-                        st.dataframe(df.head(10), use_container_width=True)
-                        
                         # Store in session state
                         st.session_state['uploaded_data'] = df
                         st.session_state['file_name'] = uploaded_file.name
@@ -257,7 +393,7 @@ def main():
                         col1, col2 = st.columns(2)
                         
                         with col1:
-                            if st.button("🔮 Run Forecast", type="primary", use_container_width=True):
+                        if st.button("🔮 Forecast Excel File", type="primary", use_container_width=True):
                                 if 'uploaded_data' in st.session_state:
                                     with st.spinner("Running forecast..."):
                                         try:
@@ -274,10 +410,10 @@ def main():
                                             # Run forecast
                                             forecast_results = process_forecast(
                                                 st.session_state['uploaded_data'],
-                                                max_data_months=max_data_months,
-                                                batch_size=batch_size,
-                                                enable_lstm=enable_lstm,
-                                                enable_ensemble=enable_ensemble
+                                            max_data_months=24,
+                                            batch_size=10,
+                                            enable_lstm=True,
+                                            enable_ensemble=True
                                             )
                                             
                                             # Store results
@@ -325,7 +461,7 @@ def main():
                                             # Run categorization
                                             categorization_results = process_categorization(
                                                 st.session_state['uploaded_data'],
-                                                max_data_months=max_data_months
+                                            max_data_months=24
                                             )
                                             
                                             # Store results
@@ -355,57 +491,385 @@ def main():
                                                 status="failed"
                                             )
     
-    with tab2:
-        st.header("📊 Forecast Results")
-        
-        if 'forecast_results' in st.session_state:
-            display_forecast_results(st.session_state['forecast_results'])
-        else:
-            st.info("ℹ️ No forecast results available. Please run forecast first.")
+def create_dashboard_prediction():
+    """Create prediction dashboard like in the image"""
+    st.markdown("""
+    <div class="dashboard-card">
+        <div class="dashboard-title">Prediksi Permintaan di Bulan Mendatang</div>
+    </div>
+    """, unsafe_allow_html=True)
     
-    with tab3:
-        st.header("📋 Categorization Results")
-        
-        if 'categorization_results' in st.session_state:
-            display_categorization_results(st.session_state['categorization_results'])
-        else:
-            st.info("ℹ️ No categorization results available. Please run categorization first.")
+    # Get real data if available
+    forecast_data = st.session_state.get('forecast_results', {})
+    realtime_data = forecast_data.get('data', {}).get('realtime_results', [])
     
-    with tab4:
-        st.header("📈 System Monitoring")
+    # Default values
+    icc_value = "A1"
+    forecast_2025_01 = "1,316,571"
+    forecast_2025_02 = "1,358,000"
+    
+    # Update with real data if available
+    if realtime_data:
+        # Get the first part's forecast for display
+        first_part = realtime_data[0] if realtime_data else {}
+        if 'forecast_2025_01' in first_part:
+            forecast_2025_01 = f"{first_part['forecast_2025_01']:,.0f}"
+        if 'forecast_2025_02' in first_part:
+            forecast_2025_02 = f"{first_part['forecast_2025_02']:,.0f}"
+        if 'inventory_control_class' in first_part:
+            icc_value = first_part['inventory_control_class']
+    
+    # Metrics cards
+    col1, col2, col3 = st.columns(3)
+    
+    with col1:
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-label">ICC</div>
+            <div class="metric-value">{icc_value}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-label">Forecast 2025-01</div>
+            <div class="metric-value">{forecast_2025_01}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col3:
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-label">Forecast 2025-02</div>
+            <div class="metric-value">{forecast_2025_02}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Charts
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Bar chart untuk forecast
+        # Get real forecast data if available
+        forecast_values = [1316571, 1358000, 1280000, 1420000]  # Default values
+        if realtime_data:
+            # Extract forecast values from real data
+            first_part = realtime_data[0] if realtime_data else {}
+            forecast_values = [
+                first_part.get('forecast_2025_01', 1316571),
+                first_part.get('forecast_2025_02', 1358000),
+                first_part.get('forecast_2025_03', 1280000),
+                first_part.get('forecast_2025_04', 1420000)
+            ]
         
-        # Display monitoring information
+        st.markdown(f"""
+        <div class="chart-container">
+            <canvas id="forecastBarChart" width="400" height="200"></canvas>
+        </div>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            const ctx1 = document.getElementById('forecastBarChart').getContext('2d');
+            new Chart(ctx1, {{
+                type: 'bar',
+                data: {{
+                    labels: ['2025-01', '2025-02', '2025-03', '2025-04'],
+                    datasets: [{{
+                        label: 'Forecast',
+                        data: {forecast_values},
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    scales: {{
+                        y: {{
+                            beginAtZero: true,
+                            max: {max(forecast_values) * 1.2},
+                            ticks: {{
+                                stepSize: {max(forecast_values) // 3}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+        </script>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        # Line chart untuk history vs forecast
+        # Get real historical and forecast data if available
+        history_data = [120000, 135000, 110000, 125000, 140000, 130000, 145000, 150000]  # Default values
+        forecast_data = [1316571, 1358000, 1280000, 1420000]  # Default values
+        
+        if realtime_data:
+            # Extract historical data from uploaded dataset
+            uploaded_data = st.session_state.get('uploaded_data')
+            if uploaded_data is not None:
+                # Get historical data for the first part
+                first_part = realtime_data[0] if realtime_data else {}
+                part_no = first_part.get('part_number', '')
+                if part_no:
+                    part_data = uploaded_data[uploaded_data['PART_NO'] == part_no].sort_values('MONTH')
+                    if len(part_data) >= 8:
+                        history_data = part_data['ORIGINAL_SHIPPING_QTY'].tail(8).tolist()
+            
+            # Extract forecast data
+            first_part = realtime_data[0] if realtime_data else {}
+            forecast_data = [
+                first_part.get('forecast_2025_01', 1316571),
+                first_part.get('forecast_2025_02', 1358000),
+                first_part.get('forecast_2025_03', 1280000),
+                first_part.get('forecast_2025_04', 1420000)
+            ]
+        
+        # Combine data for chart
+        all_data = history_data + [None] * 4 + forecast_data
+        all_labels = ['2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10', '2024-11', '2024-12', '2025-01', '2025-02', '2025-03', '2025-04']
+        
+        st.markdown(f"""
+        <div class="chart-container">
+            <canvas id="historyForecastChart" width="400" height="200"></canvas>
+        </div>
+        <script>
+            const ctx2 = document.getElementById('historyForecastChart').getContext('2d');
+            new Chart(ctx2, {{
+                type: 'line',
+                data: {{
+                    labels: {all_labels},
+                    datasets: [{{
+                        label: 'History',
+                        data: {all_data},
+                        borderColor: 'rgba(128, 128, 128, 1)',
+                        backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                        fill: false,
+                        tension: 0.1
+                    }}, {{
+                        label: 'Forecast',
+                        data: {[None] * 8 + forecast_data},
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        fill: false,
+                        tension: 0.1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    scales: {{
+                        y: {{
+                            beginAtZero: true,
+                            max: {max(max(history_data), max(forecast_data)) * 1.2},
+                            ticks: {{
+                                stepSize: {max(max(history_data), max(forecast_data)) // 4}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+        </script>
+        """, unsafe_allow_html=True)
+
+def create_dashboard_training():
+    """Create training results dashboard like in the image"""
+    st.markdown("""
+    <div class="dashboard-card">
+        <div class="dashboard-title">Hasil Pelatihan Prediksi di 4 Bulan Sebelumnya</div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Get real data if available
+    forecast_data = st.session_state.get('forecast_results', {})
+    backtest_data = forecast_data.get('data', {}).get('backtest_results', [])
+    
+    # Default values
+    forecast_qty = "4,081,515"
+    avg_error = "13.67%"
+    
+    # Update with real data if available
+    if backtest_data:
+        total_forecast = sum(item.get('forecast_value', 0) for item in backtest_data)
+        avg_error_val = forecast_data.get('data', {}).get('average_error', 13.67)
+        forecast_qty = f"{total_forecast:,.0f}"
+        avg_error = f"{avg_error_val:.2f}%"
+    
+    # Metrics cards
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-label">Forecast QTY</div>
+            <div class="metric-value">{forecast_qty}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with col2:
+        st.markdown(f"""
+        <div class="metric-card">
+            <div class="metric-label">Average Error</div>
+            <div class="metric-value">{avg_error}</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Charts
         col1, col2 = st.columns(2)
         
         with col1:
-            st.subheader("💾 Memory Usage")
-            memory_summary = monitor.get_system_summary()
-            if memory_summary.get('avg_memory_usage_mb'):
-                st.metric("Average Memory Usage", f"{memory_summary['avg_memory_usage_mb']:.2f} MB")
+        # Line chart untuk forecast vs actual
+        # Get real backtest data if available
+        forecast_data_points = [580000, 620000, 590000, 650000]  # Default values
+        actual_data_points = [550000, 600000, 580000, 620000]  # Default values
         
-        with col2:
-            st.subheader("🖥️ CPU Usage")
-            if memory_summary.get('avg_cpu_usage_percent'):
-                st.metric("Average CPU Usage", f"{memory_summary['avg_cpu_usage_percent']:.2f}%")
+        if backtest_data:
+            # Extract forecast and actual values from real data
+            forecast_data_points = []
+            actual_data_points = []
+            for item in backtest_data[-4:]:  # Get last 4 months
+                forecast_data_points.append(item.get('forecast_value', 0))
+                actual_data_points.append(item.get('actual_value', 0))
         
-        # Display activity summary
-        st.subheader("📊 Activity Summary")
-        activity_summary = monitor.get_full_summary()
-        
-        if activity_summary.get('forecast', {}).get('total_parts_processed', 0) > 0:
-            st.metric("Parts Processed", activity_summary['forecast']['total_parts_processed'])
-            st.metric("Average Processing Time", f"{activity_summary['forecast']['avg_processing_time']:.2f}s")
-        
-        # Display recent activities
-        st.subheader("🕒 Recent Activities")
-        if activity_summary.get('web_activity', {}).get('recent_activities'):
-            activities_df = pd.DataFrame(activity_summary['web_activity']['recent_activities'])
-            st.dataframe(activities_df, use_container_width=True)
+        st.markdown(f"""
+        <div class="chart-container">
+            <canvas id="forecastActualChart" width="400" height="200"></canvas>
+        </div>
+        <script>
+            const ctx3 = document.getElementById('forecastActualChart').getContext('2d');
+            new Chart(ctx3, {{
+                type: 'line',
+                data: {{
+                    labels: ['2024-09', '2024-10', '2024-11', '2024-12'],
+                    datasets: [{{
+                        label: 'Forecast',
+                        data: {forecast_data_points},
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                        fill: false,
+                        tension: 0.1
+                    }}, {{
+                        label: 'Actual',
+                        data: {actual_data_points},
+                        borderColor: 'rgba(128, 128, 128, 1)',
+                        backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                        fill: false,
+                        tension: 0.1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    scales: {{
+                        y: {{
+                            beginAtZero: true,
+                            max: {max(max(forecast_data_points), max(actual_data_points)) * 1.2},
+                            ticks: {{
+                                stepSize: {max(max(forecast_data_points), max(actual_data_points)) // 6}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+        </script>
+        """, unsafe_allow_html=True)
     
-    # Footer
+    with col2:
+        # Bar chart untuk model performance
+        # Get real model performance data if available
+        model_performance = [2.8, 2.5, 1.8]  # Default values
+        model_labels = ['WMA', 'RF', 'XGB']
+        
+        if backtest_data:
+            # Extract model performance from real data
+            model_scores = {}
+            for item in backtest_data:
+                best_model = item.get('best_model', 'WMA')
+                if best_model not in model_scores:
+                    model_scores[best_model] = 0
+                model_scores[best_model] += 1
+            
+            # Convert to performance scores
+            total_parts = len(backtest_data)
+            model_performance = [
+                model_scores.get('WMA', 0) / total_parts * 3,
+                model_scores.get('RF', 0) / total_parts * 3,
+                model_scores.get('XGB', 0) / total_parts * 3
+            ]
+        
+        st.markdown(f"""
+        <div class="chart-container">
+            <canvas id="modelPerformanceChart" width="400" height="200"></canvas>
+        </div>
+        <script>
+            const ctx4 = document.getElementById('modelPerformanceChart').getContext('2d');
+            new Chart(ctx4, {{
+                type: 'bar',
+                data: {{
+                    labels: {model_labels},
+                    datasets: [{{
+                        label: 'Performance Score',
+                        data: {model_performance},
+                        backgroundColor: 'rgba(102, 126, 234, 0.8)',
+                        borderColor: 'rgba(102, 126, 234, 1)',
+                        borderWidth: 1
+                    }}]
+                }},
+                options: {{
+                    responsive: true,
+                    scales: {{
+                        y: {{
+                            beginAtZero: true,
+                            max: {max(model_performance) * 1.2},
+                            ticks: {{
+                                stepSize: {max(model_performance) // 6}
+                            }}
+                        }}
+                    }}
+                }}
+            }});
+        </script>
+        """, unsafe_allow_html=True)
+
+def main():
+    """Main Streamlit application dengan layout seperti gambar"""
+    
+    # Welcome section
+    st.markdown("""
+    <div class="welcome-section">
+        <div class="welcome-title">Welcome to Forecasting Parts Website</div>
+        <div class="welcome-subtitle">
+            Upload Dataset (Excel File) Anda dan Dapatkan Prediksi Permintaan Part Number Kamu di Bulan Mendatang
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Upload section
+    create_upload_section()
+    
+    # Dashboard section
+    st.markdown("""
+    <div class="dashboard-container">
+    """, unsafe_allow_html=True)
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        create_dashboard_prediction()
+    
+    with col2:
+        create_dashboard_training()
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    
+    # Show results if available
+    if 'forecast_results' in st.session_state:
+        st.markdown("---")
+        st.header("📊 Forecast Results")
+        display_forecast_results(st.session_state['forecast_results'])
+    
+    if 'categorization_results' in st.session_state:
     st.markdown("---")
-    st.markdown("**Forecast Web Application** - Powered by Streamlit")
-    st.markdown(f"Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}")
+        st.header("📋 Categorization Results")
+        display_categorization_results(st.session_state['categorization_results'])
 
 if __name__ == "__main__":
     # Initialize session state
